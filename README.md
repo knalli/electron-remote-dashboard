@@ -15,6 +15,10 @@ doing this, you would prefer a nice web interface for managing and controlling t
 
 Welcome!
 
+![Overview](site/screenshots-overview.png)
+
+[See more](site/screenshots.md)
+
 ## Features
 
 - session data are persisted between restarts
