@@ -18,7 +18,7 @@ let mainWindow;
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width : config.get('window', 'height', 1024),
+    width : config.get('window', 'width', 1024),
     height : config.get('window', 'height', 768),
     fullscreen : config.get('window', 'fullscreen'),
     titleBarStyle : config.get('window', 'titleBarStyle', 'hidden')
