@@ -1,0 +1,44 @@
+body > main#splashscreen {
+    box-sizing: border-box;
+}
+
+body > main#splashscreen *, html > body > main#splashscreen *:before, html > body > main#splashscreen *:after {
+    box-sizing: inherit;
+}
+
+html > body {
+    background-color: tan;
+    font-family: -apple-system, "Helvetica Neue", "Lucida Grande";
+    color: black;
+}
+
+html > body > main#splashscreen article.welcome-teaser {
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 1.4em;
+    margin-top: 30%;
+}
+
+html > body > main#splashscreen article.welcome-teaser h1 em {
+    color: brown;
+}
+
+html > body > main#splashscreen article.welcome-teaser .available-url-wrapper {
+    display: none;
+}
+
+html > body > main#splashscreen article.welcome-teaser .available-url {
+    color: darkslateblue;
+    text-decoration: underline;
+}
+
+html > body > webview {
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:none;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Control Unit</title>
+    <!--
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    -->
+    <link rel="stylesheet" href="/node_modules/angular-material/angular-material.css">
+    <link rel="stylesheet" href="styles/default.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="/node_modules/angular-aria/angular-aria.js"></script>
+    <script src="/node_modules/angular-animate/angular-animate.js"></script>
+    <script src="/node_modules/angular-material/angular-material.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/AppController.js"></script>
+    <script src="scripts/DashboardController.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body ng-controller="AppController as app">
+<div>
+    <md-content layout="column" ng-controller="DashboardController as dashboardCtrl">
+        <md-toolbar class="md-theme-light" ng-class="{'md-warn': !(dashboardCtrl.states.connected && dashboardCtrl.states.online)}">
+            <div class="md-toolbar-tools">
+                <h2 class="md-toolbar-tools">
+                    <span>Dashboard Control Unit</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-raised"
+                           ng-class="{'md-warn': !dashboardCtrl.states.connected}"
+                           aria-label="Connected"
+                           style="width:200px">
+                    <span ng-if="dashboardCtrl.states.connected">Connected</span>
+                    <span ng-if="!dashboardCtrl.states.connected">Not connected</span>
+                </md-button>
+                <md-button class="md-raised"
+                           ng-class="{'md-warn': !dashboardCtrl.states.online}"
+                           aria-label="Online"
+                           style="width:200px"
+                           ng-if="dashboardCtrl.states.connected">
+                    <span ng-if="dashboardCtrl.states.online">Online</span>
+                    <span ng-if="!dashboardCtrl.states.online">Offline</span>
+                </md-button>
+                <md-button class="md-raised md-warn"
+                           aria-label="Online"
+                           style="width:200px"
+                           ng-if="!dashboardCtrl.states.connected">
+                    <span>Unknown</span>
+                </md-button>
+                <md-button class="md-raised md-hue-gh"
+                           aria-label="Online"
+                           href="https://github.com/knalli/electron-remote-dashboard"
+                           style="width:200px"
+                           ng-if="!dashboardCtrl.states.hideGitHubLink">
+                    <span>View on GitHub</span>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content flex layout-padding>
+            <div flex-xs flex-gt-xs="50" layout="column">
+                <md-card ng-class="{'md-warn': dashboardCtrl.webview.failed}">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline md-headline-with-spinner">
+                                <md-progress-circular class="md-hue-2"
+                                                      md-mode="{{dashboardCtrl.webview.loadingShow}}"
+                                                      md-diameter="20px"
+                                                      ng-if="dashboardCtrl.webview.loading"></md-progress-circular>
+                                <i class="material-icons"
+                                   ng-if="!dashboardCtrl.webview.loadingShow && !dashboardCtrl.webview.failed"
+                                   style="color: green">check_circle</i>
+                                <i class="material-icons"
+                                   ng-if="!dashboardCtrl.webview.loadingShow && dashboardCtrl.webview.failed"
+                                   style="color: red">error</i>
+                                <span>{{ (dashboardCtrl.webview.title || dashboardCtrl.activeDashboard) }}</span>
+                            </span>
+                            <span class="md-subhead" ng-if="!dashboardCtrl.webview.failed"
+                                  ng-bind-html="dashboardCtrl.webview.description"></span>
+                            <span class="md-subhead" ng-if="dashboardCtrl.webview.failed">HTTP response: {{ dashboardCtrl.webview.lastResponse.httpResponseCode }}</span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div class="md-media-lg card-media">
+                                <img src="/.cache/current-view.png" class="preview" id="tabPreview">
+                            </div>
+                        </md-card-title-media>
+                    </md-card-title>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button ng-click="dashboardCtrl.reload()">Reload</md-button>
+                        <md-button class="md-warn"
+                                   aria-label="Remove dashboard"
+                                   ng-click="dashboardCtrl.showRemoveDashboardDialog($event, dashboardCtrl.activeDashboard)"
+                                   ng-if="item.id != dashboardCtrl.activeDashboard">
+                            <md-icon md-font-set="material-icons"> remove_circle </md-icon> Delete
+                        </md-button>
+                    </md-card-actions>
+                </md-card>
+            </div>
+            <form ng-submit="submit()" layout="column" ng-cloak>
+                <md-button class="md-fab md-mini"
+                           aria-label="Create dashboard"
+                           ng-click="dashboardCtrl.showCreateDashboardDialog()"
+                           style="position: fixed; bottom: 0; right: 0;">
+                    <md-icon md-font-set="material-icons"> add </md-icon>
+                </md-button>
+                <md-radio-group ng-model="dashboardCtrl.pendingDashboard" class="md-primary"
+                                ng-change="dashboardCtrl.applyActive(dashboardCtrl.pendingDashboard)">
+                    <md-radio-button ng-repeat="item in dashboardCtrl.items"
+                                     ng-value="item.id">
+                        {{ item.display }}
+                        <span class="description" ng-if="item.description">
+                            <br>
+                            {{ item.description }}
+                        </span>
+                    </md-radio-button>
+                </md-radio-group>
+            </form>
+        </md-content>
+    </md-content>
+</div>
+</body>
+</html>

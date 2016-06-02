@@ -1,0 +1,22 @@
+._md-label .description {
+    color: saddlebrown;
+    font-size: 0.9em;
+}
+
+md-card-title-media img.preview {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.md-headline-with-spinner md-progress-circular + span {
+    padding-left: 26px;
+}
+
+md-card.md-warn {
+    background-color: #ffbdc6;
+}
+
+.md-button.md-raised.md-hue-gh {
+    color: rgb(255,255,255);
+    background-color: rgb(47, 44, 43);
+}

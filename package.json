@@ -1,0 +1,33 @@
+{
+  "name": "electron-remote-dashboard",
+  "version": "1.0.0",
+  "description": "Remote dashboard with a control app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knalli/electron-remote-dashboard"
+  },
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "author": {
+    "name": "Jan Philipp",
+    "email": "knallisworld@googlemail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.5.5",
+    "angular-animate": "^1.5.5",
+    "angular-aria": "^1.5.5",
+    "angular-material": "^1.1.0-rc4-master-06e7e99",
+    "electron-prebuilt": "^1.1.1",
+    "electron-screenshot": "^1.0.3",
+    "eventemitter3": "^1.2.0",
+    "express": "^4.13.4",
+    "socket.io": "^1.4.6"
+  },
+  "engines": {
+    "node": "^4.4",
+    "npm": "^3"
+  }
+}

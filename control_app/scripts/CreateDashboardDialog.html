@@ -1,0 +1,49 @@
+<md-dialog aria-label="Create dashboard" ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Create dashboard</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-font-set="material-icons"> close </md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-content md-theme="docs-dark" layout-sm-xs="row" layout-padding>
+                <div>
+                    <md-input-container>
+                        <label>Id</label>
+                        <input ng-model="dashboard.id" required>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Display</label>
+                        <input ng-model="dashboard.display" required>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container>
+                        <label>URL</label>
+                        <input ng-model="dashboard.url" required>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container>
+                        <label>Description</label>
+                        <textarea ng-model="dashboard.description" rows="3" md-select-on-focus></textarea>
+                    </md-input-container>
+                </div>
+            </md-content>
+
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="answer()">
+                Cancel
+            </md-button>
+            <md-button ng-click="answer(dashboard)">
+                Create
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+    // This sends the online status change events to the main process.
+
+    const ipcRenderer = require('electron').ipcRenderer;
+    const forwardOnlineStatus = () => {
+        ipcRenderer.send('online-status-changed', navigator.onLine ? 'online' : 'offline');
+    };
+
+    window.addEventListener('online',  forwardOnlineStatus);
+    window.addEventListener('offline',  forwardOnlineStatus);
+
+    setTimeout(forwardOnlineStatus, 100);
+</script>
+</body>
+</html>
