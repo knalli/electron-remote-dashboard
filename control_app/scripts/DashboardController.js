@@ -4,14 +4,15 @@ angular.module('app')
     var me = this;
 
     this.states = {
-      online : false
+      online: false
     };
 
     this.webview = {
-      loading : false,
-      failed : false,
-      title : '',
-      url : null
+      loading: false,
+      failed: false,
+      title: '',
+      url: null,
+      fullscreen: false
     };
 
     this.activeDashboard = '';
@@ -19,7 +20,7 @@ angular.module('app')
     this.items = [];
 
     var socket = io(undefined, {
-      timeout : 5000
+      timeout: 5000
     });
     socket.on('connect', function () {
       $scope.$apply(function () {
@@ -136,7 +137,7 @@ angular.module('app')
     this.showCreateDashboardDialog = function (ev) {
       var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
       $mdDialog.show({
-        controller : function ($scope, $mdDialog) {
+        controller: function ($scope, $mdDialog) {
           $scope.hide = function () {
             $mdDialog.hide();
           };
@@ -147,11 +148,11 @@ angular.module('app')
             $mdDialog.hide(answer);
           };
         },
-        templateUrl : 'scripts/CreateDashboardDialog.html',
-        parent : angular.element(document.body),
-        targetEvent : ev,
-        clickOutsideToClose : true,
-        fullscreen : useFullScreen
+        templateUrl: 'scripts/CreateDashboardDialog.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen
       })
         .then(function (dashboard) {
           if (dashboard) {
@@ -213,6 +214,28 @@ angular.module('app')
             $mdToast.show(
               $mdToast.simple()
                 .textContent('Removed.')
+                .position('bottom right')
+                .hideDelay(2000)
+            );
+          }
+        });
+      });
+    };
+
+    this.toggleFullscreen = function () {
+      socket.emit('toggle-fullscreen', function (result) {
+        $scope.$apply(function () {
+          if (!result.success) {
+            $mdDialog.show(
+              $mdDialog.alert()
+                .title('Failed')
+                .textContent(result.message || 'Could not switch fullscreen.')
+                .ok('Dismiss')
+            );
+          } else {
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent('switch fullscreen.')
                 .position('bottom right')
                 .hideDelay(2000)
             );

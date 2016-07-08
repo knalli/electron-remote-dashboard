@@ -89,3 +89,7 @@ server.on('dashboard-updated', (dashboards) => {
   //app.clearRecentDocuments();
   //app.addRecentDocument('/Users/USERNAME/Desktop/work.type');
 });
+
+server.on('toggle-fullscreen', () => {
+  mainWindow.setFullScreen(!mainWindow.isFullScreen());
+});

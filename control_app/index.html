@@ -103,6 +103,12 @@
                            style="position: fixed; bottom: 0; right: 0;">
                     <md-icon md-font-set="material-icons"> add </md-icon>
                 </md-button>
+                <md-button class="md-button md-fullscreen"
+                           aria-label="Fullscreen On/Off"
+                           ng-click="dashboardCtrl.toggleFullscreen()"
+                           style="position: fixed; bottom: 0; right: 10;">
+                    <md-icon md-font-set="material-icons md-light"> launch </md-icon>
+                </md-button>
                 <md-radio-group ng-model="dashboardCtrl.pendingDashboard" class="md-primary"
                                 ng-change="dashboardCtrl.applyActive(dashboardCtrl.pendingDashboard)">
                     <md-radio-button ng-repeat="item in dashboardCtrl.items"

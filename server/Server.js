@@ -51,6 +51,9 @@ class Server extends EventEmitter {
       socket.on('remove-dashboard', (dashboardId, fn) => {
         this.removeDashboard(dashboardId, fn);
       });
+      socket.on('toggle-fullscreen', (fn) => {
+        this.toggleFullscreen(fn);
+      });
       if (this.states) {
         socket.emit('states-updated', this.states);
       }
@@ -194,6 +197,14 @@ class Server extends EventEmitter {
       active : this.config.get('dashboards', 'active'),
       items : this.config.get('dashboards', 'items', [])
     };
+  }
+
+  // Incoming fullscreen request
+  toggleFullscreen(fn){
+    this.emit('toggle-fullscreen');
+    if (fn) {
+      fn({success : true});
+    }
   }
 
 }
