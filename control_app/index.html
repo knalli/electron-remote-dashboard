@@ -86,6 +86,7 @@
                         </md-card-title-media>
                     </md-card-title>
                     <md-card-actions layout="row" layout-align="end center">
+                        <md-button ng-click="dashboardCtrl.showEditDashboardDialog($event, dashboardCtrl.activeDashboard)">Edit</md-button>
                         <md-button ng-click="dashboardCtrl.reload()">Reload</md-button>
                         <md-button class="md-warn"
                                    aria-label="Remove dashboard"

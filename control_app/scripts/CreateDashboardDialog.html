@@ -2,7 +2,8 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Create dashboard</h2>
+                <h2 ng-if="!editMode">Create dashboard</h2>
+                <h2 ng-if="editMode">Edit dashboard</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon md-font-set="material-icons"> close </md-icon>
@@ -14,7 +15,7 @@
                 <div>
                     <md-input-container>
                         <label>Id</label>
-                        <input ng-model="dashboard.id" required>
+                        <input ng-model="dashboard.id" required ng-disabled="editMode">
                     </md-input-container>
                     <md-input-container>
                         <label>Display</label>
@@ -41,8 +42,11 @@
             <md-button ng-click="answer()">
                 Cancel
             </md-button>
-            <md-button ng-click="answer(dashboard)">
+            <md-button ng-click="answer(dashboard)" ng-if="!editMode">
                 Create
+            </md-button>
+            <md-button ng-click="answer(dashboard)" ng-if="editMode">
+                Edit
             </md-button>
         </md-dialog-actions>
     </form>

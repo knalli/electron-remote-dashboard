@@ -54,6 +54,10 @@ class Server extends EventEmitter {
       socket.on('toggle-fullscreen', (fn) => {
         this.toggleFullscreen(fn);
       });
+      socket.on('update-dashboard', (dashboard, fn) => {
+        this.updateDashboard(dashboard, fn);
+      });
+
       if (this.states) {
         socket.emit('states-updated', this.states);
       }
@@ -176,6 +180,37 @@ class Server extends EventEmitter {
         }
       } else {
         this.config.save();
+      }
+    }
+  }
+
+  updateDashboard(inDashboardUpdate, fn) {
+    let dashboardId = inDashboardUpdate.id;
+    let dashboard = this.config.get('dashboards', 'items', []).filter((db) => db.id === dashboardId)[0];
+    if (!dashboard) {
+      if (fn) {
+        console.warn(`Dashboard ${dashboardId} not found`);
+        fn({success : false, message : 'Bad luck'});
+      }
+    } else {
+      const items = this.config.get('dashboards', 'items', []);
+      // update
+      items.filter((db) => db.id === dashboardId)
+        .map((db) => {
+          db.display = inDashboardUpdate.display;
+          db.url = inDashboardUpdate.url;
+          db.description = inDashboardUpdate.description;
+        });
+      this.config.put('dashboards', 'items', items);
+      if (fn) {
+        fn({success: true});
+      }
+      this.ioServer.emit('dashboards-updated', this.getDashboards());
+      this.config.save();
+
+      // send update of new url
+      if (this.config.get('dashboards', 'active') === dashboardId) {
+        this.applyViewUrl({url: inDashboardUpdate.url});
       }
     }
   }

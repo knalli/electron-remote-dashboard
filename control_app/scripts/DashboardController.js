@@ -178,6 +178,50 @@ angular.module('app')
       });
     };
 
+    this.showEditDashboardDialog = function (ev, dashboardId) {
+
+      var dashboard;
+      for (var i = 0; i < me.items.length; i++) {
+        if (me.items[i].id === dashboardId) {
+          dashboard = me.items[i];
+          break;
+        }
+      }
+
+      if (!dashboard) {
+        return;
+      }
+        
+      var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+      $mdDialog.show({
+        controller: function ($scope, $mdDialog) {
+          $scope.hide = function () {
+            $mdDialog.hide();
+          };
+          $scope.cancel = function () {
+            $mdDialog.cancel();
+          };
+          $scope.answer = function (answer) {
+            $mdDialog.hide(answer);
+          };
+          $scope.dashboard = angular.copy(dashboard);
+          $scope.editMode = true;
+        },
+        templateUrl: 'scripts/CreateDashboardDialog.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true,
+        fullscreen: useFullScreen
+      })
+        .then(function (dashboard) {
+          if (dashboard) {
+            me.updateDashboard(dashboard);
+          }
+        }, function () {
+          // TODO
+        });
+    };
+
     this.createDashboard = function (dashboard) {
       socket.emit('create-dashboard', dashboard, function (result) {
         $scope.$apply(function () {
@@ -236,6 +280,28 @@ angular.module('app')
             $mdToast.show(
               $mdToast.simple()
                 .textContent('switch fullscreen.')
+                .position('bottom right')
+                .hideDelay(2000)
+            );
+          }
+        });
+      });
+    };
+
+    this.updateDashboard = function (dashboard) {
+      socket.emit('update-dashboard', dashboard, function (result) {
+        $scope.$apply(function () {
+          if (!result.success) {
+            $mdDialog.show(
+              $mdDialog.alert()
+                .title('Failed')
+                .textContent(result.message || 'Could not edit the dashboard.')
+                .ok('Dismiss')
+            );
+          } else {
+            $mdToast.show(
+              $mdToast.simple()
+                .textContent('edit complete.')
                 .position('bottom right')
                 .hideDelay(2000)
             );
