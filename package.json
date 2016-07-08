@@ -8,7 +8,9 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "build-windows": "electron-packager ./ --platform=win32 --arch=x64",
+    "build-linux": "electron-packager ./ --platform=linux --arch=x64"
   },
   "author": {
     "name": "Jan Philipp",
@@ -29,5 +31,8 @@
   "engines": {
     "node": "^4.4",
     "npm": "^3"
+  },
+  "devDependencies": {
+    "electron-packager": "^7.1.0"
   }
 }
