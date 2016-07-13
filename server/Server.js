@@ -121,7 +121,7 @@ class Server extends EventEmitter {
       this.config.save();
     } else {
       this.config.put('dashboards', 'active', dashboard.id);
-      this.applyViewUrl({url : dashboard.url});
+      this.applyViewUrl({url : dashboard.url, username: dashboard.username , password: dashboard.password});
       if (fn) {
         fn({success : true});
       }
@@ -200,6 +200,8 @@ class Server extends EventEmitter {
           db.display = inDashboardUpdate.display;
           db.url = inDashboardUpdate.url;
           db.description = inDashboardUpdate.description;
+          db.username = inDashboardUpdate.username;
+          db.password = inDashboardUpdate.password;
         });
       this.config.put('dashboards', 'items', items);
       if (fn) {
@@ -210,7 +212,7 @@ class Server extends EventEmitter {
 
       // send update of new url
       if (this.config.get('dashboards', 'active') === dashboardId) {
-        this.applyViewUrl({url: inDashboardUpdate.url});
+        this.applyViewUrl({url: inDashboardUpdate.url, username: inDashboardUpdate.username , password: inDashboardUpdate.password});
       }
     }
   }
@@ -219,7 +221,11 @@ class Server extends EventEmitter {
     this.emit('server-stopped');
   }
 
-  applyViewUrl({url}) {
+  applyViewUrl({url, username, password}) {
+    if (username && password) {
+      var indexOfLink = url.indexOf('://') + 3;
+      url = url.substring(0, indexOfLink) + username + ":" + password + "@" + url.substring(indexOfLink);
+    }
     this.emit('view-set-url', {url});
   }
 

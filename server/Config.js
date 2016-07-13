@@ -85,7 +85,9 @@ class Config extends EventEmitter {
             id : item.id,
             display : item.display,
             url : item.url,
-            description : item.description
+            description : item.description,
+            username : item.username,
+            password : item.password
           };
         })
       },
